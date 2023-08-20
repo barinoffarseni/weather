@@ -5,9 +5,8 @@ import requests
 
 load_dotenv()
 
-
-city = os.getenv('CITY')
 key = os.getenv('KEY')
+city = input("Write your city:")
 
 url = 'http://api.weatherstack.com/current?query=' + city + '&access_key=' + key + '&units=m'
 

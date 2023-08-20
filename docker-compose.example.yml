@@ -1,11 +1,18 @@
 version: "3"
 services:
   app:
-    image: python:3-alpine
+    # image: python:3-alpine
+    build:
+      context: ./
     container_name: weather-app
-    # restart: unless-stopped # uncomment to production
-    working_dir: /home/python/app
-    #user: python
     volumes:
     - ./:/home/python/app
-    command: ash -c "pip install --no-cache-dir -r requirements.txt && python script.py"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    # command: ash -c "pip install --no-cache-dir -r requirements.txt && python script.py"
+    # command: ash -c "pwd && python script.py"
+    # command: python script.py
+
+# docker-compose up -d включить образ в свернутом режиме
+# docker-compose exec app python script.py в свернутом образе докера который запущен, выполнить команду
+# docker-compose stop выключить все образы докер (свернутые тоже)
