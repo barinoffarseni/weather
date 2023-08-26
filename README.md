@@ -19,3 +19,4 @@ docker-compose build
 ```bash
 docker-compose up
 ```
+6. auto-py-to-exe
