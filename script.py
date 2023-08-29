@@ -21,7 +21,7 @@ class MainWindow(QMainWindow):
         widget.setEditable(True)
         widget.addItems(["Moscow", "Ottawa", "Paris"])
 
-        # self.data_input = QLineEdit()
+        self.data_input = QLineEdit()
         
         # self.addItems(["One", "Two", "Three"])
         layout.addWidget(widget)
@@ -45,12 +45,13 @@ class MainWindow(QMainWindow):
         self.refresh_widget_temperature(temperature)
 
     def get_city(widget):
-        return widget.text()
+        return widget.data_input.text()
 
     def get_temperature(self, city, key):
         url = 'http://api.weatherstack.com/current?query=' + city + '&access_key=' + key + '&units=m'
         res = requests.get(url)
         json = res.json()
+        print(json)
         return json["current"]["temperature"]
 
     def refresh_widget_temperature(self, temperature):
