@@ -2,7 +2,7 @@ import sys
 import os
 import requests
 from dotenv import load_dotenv 
-from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QLineEdit, QComboBox, QLabel
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QComboBox, QLabel
 
 load_dotenv()
 
@@ -17,15 +17,16 @@ class MainWindow(QMainWindow):
 
         layout = QVBoxLayout()
 
-        widget = QComboBox()
-        widget.setEditable(True)
-        widget.addItems(["Moscow", "Ottawa", "Paris"])
+        self.data_input = QComboBox()
+        self.data_input.setEditable(True)
+        self.data_input.addItems(["Moscow", "Ottawa", "Paris"])
 
-        self.data_input = QLineEdit()
+        # self.data_input = QLineEdit()
+        
+        self.data_input.currentIndexChanged.connect(self.click)
         
         # self.addItems(["One", "Two", "Three"])
-        layout.addWidget(widget)
-
+        layout.addWidget(self.data_input)
 
         submit_button = QPushButton("Enter")
         submit_button.clicked.connect(self.click)
@@ -44,14 +45,14 @@ class MainWindow(QMainWindow):
         temperature = self.get_temperature(city, self.key)
         self.refresh_widget_temperature(temperature)
 
-    def get_city(widget):
-        return widget.data_input.text()
+    def get_city(self):
+        return self.data_input.currentText()
 
     def get_temperature(self, city, key):
         url = 'http://api.weatherstack.com/current?query=' + city + '&access_key=' + key + '&units=m'
+        print(url)
         res = requests.get(url)
         json = res.json()
-        print(json)
         return json["current"]["temperature"]
 
     def refresh_widget_temperature(self, temperature):
