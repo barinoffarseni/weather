@@ -4,6 +4,7 @@ from PyQt6.QtGui import QPixmap
 import requests
 from dotenv import load_dotenv 
 from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QComboBox, QLabel
+from threading import Timer
 
 load_dotenv()
 
@@ -27,7 +28,6 @@ class MainWindow(QMainWindow):
         layout.addWidget(self.data_input)
         layout.addWidget(self.home)
 
-
         submit_button = QPushButton("Enter")
         submit_button.clicked.connect(self.click)
         layout.addWidget(submit_button)
@@ -40,10 +40,17 @@ class MainWindow(QMainWindow):
         central_widget.setLayout(layout)
         self.setCentralWidget(central_widget)
 
-    def click(self):
-        city = self.get_city()
-        temperature = self.get_temperature(city, self.key)
+    def temperature_timer(self):
+        temperature = self.get_temperature(self.city, self.key)
         self.refresh_widget_temperature(temperature)
+        Timer(10, self.temperature_timer).start()
+
+    def click(self):
+        self.city = self.get_city()
+        temperature = self.get_temperature(self.city, self.key)
+        self.refresh_widget_temperature(temperature)
+
+        # self.temperature_timer()
 
     def get_city(self):
         return self.data_input.currentText()
